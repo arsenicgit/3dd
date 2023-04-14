@@ -124,10 +124,10 @@ function smoothScroll(target, duration) {
   }
   requestAnimationFrame(loop);
 }
-
+console.log(camera.position.z);
 var section1 = document.querySelector(".section1");
 section1.addEventListener("click", function () {
-  smoothScroll(".section2", 1000);
+  if (camera.position.z <= 100) smoothScroll(".section2", 1000);
 });
 
 function animate() {
@@ -150,7 +150,6 @@ function animate() {
       }
     }
   }
-  console.log(topDetector);
 }
 
 window.addEventListener("pointermove", onPointerMove);
