@@ -3,9 +3,6 @@
         "generator" : "Khronos glTF Blender I/O v3.4.50",
         "version" : "2.0"
     },
-    "extensionsUsed" : [
-        "KHR_materials_emissive_strength"
-    ],
     "scene" : 0,
     "scenes" : [
         {
@@ -189,36 +186,16 @@
     "materials" : [
         {
             "doubleSided" : true,
-            "emissiveFactor" : [
-                1,
-                1,
-                1
-            ],
-            "emissiveTexture" : {
-                "index" : 0
-            },
-            "extensions" : {
-                "KHR_materials_emissive_strength" : {
-                    "emissiveStrength" : 2
-                }
-            },
             "name" : "Microphone",
             "normalTexture" : {
-                "index" : 1
-            },
-            "occlusionTexture" : {
-                "index" : 2
+                "index" : 0
             },
             "pbrMetallicRoughness" : {
-                "baseColorFactor" : [
-                    0.800000011920929,
-                    0.800000011920929,
-                    0.800000011920929,
-                    1
-                ],
-                "metallicRoughnessTexture" : {
-                    "index" : 2
-                }
+                "baseColorTexture" : {
+                    "index" : 1
+                },
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
             }
         }
     ],
@@ -302,27 +279,18 @@
         {
             "sampler" : 0,
             "source" : 1
-        },
-        {
-            "sampler" : 0,
-            "source" : 2
         }
     ],
     "images" : [
         {
             "mimeType" : "image/png",
-            "name" : "Microphone_baseColor",
-            "uri" : "Microphone_baseColor.png"
-        },
-        {
-            "mimeType" : "image/png",
             "name" : "Microphone_normal",
-            "uri" : "Microphone_normal.png"
+            "uri" : "textures/Microphone_normal.png"
         },
         {
             "mimeType" : "image/png",
-            "name" : "Microphone_metallicRoughness",
-            "uri" : "Microphone_metallicRoughness.png"
+            "name" : "Microphone_baseColor",
+            "uri" : "textures/Microphone_baseColor.png"
         }
     ],
     "accessors" : [
