@@ -4,19 +4,58 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 const scene = new t.Scene();
-const spaceTexture = new t.TextureLoader().load("omeganebula1.png");
+const spaceTexture = new t.TextureLoader().load("space.png");
+spaceTexture.minFilter = t.LinearFilter;
 scene.background = spaceTexture;
+
+function setBackground(scene, backgroundImageWidth, backgroundImageHeight) {
+  var windowSize = function (withScrollBar) {
+    var wid = 0;
+    var hei = 0;
+    if (typeof window.innerWidth != "undefined") {
+      wid = window.innerWidth;
+      hei = window.innerHeight;
+    } else {
+      if (document.documentElement.clientWidth == 0) {
+        wid = document.body.clientWidth;
+        hei = document.body.clientHeight;
+      } else {
+        wid = document.documentElement.clientWidth;
+        hei = document.documentElement.clientHeight;
+      }
+    }
+    return {
+      width: wid - (withScrollBar ? wid - document.body.offsetWidth + 1 : 0),
+      height: hei,
+    };
+  };
+
+  if (scene.background) {
+    var size = windowSize(true);
+    var factor =
+      backgroundImageWidth / backgroundImageHeight / (size.width / size.height);
+
+    scene.background.offset.x = factor > 1 ? (1 - 1 / factor) / 2 : 0;
+    scene.background.offset.y = factor > 1 ? 0 : (1 - factor) / 2;
+
+    scene.background.repeat.x = factor > 1 ? 1 / factor : 1;
+    scene.background.repeat.y = factor > 1 ? 1 : factor;
+  }
+}
+
+setBackground(scene, 7680, 4320);
 
 const camera = new t.PerspectiveCamera(
   30,
   window.innerWidth / window.innerHeight,
   0.1,
-  1000
+  1300
 );
 const topDetector = document.body.getBoundingClientRect().top;
 camera.position.set(topDetector * -0.05, topDetector * -0.05, 99.6);
 
 const renderer = new t.WebGL1Renderer({
+  antialias: true,
   canvas: document.querySelector("#bg"),
 });
 renderer.setPixelRatio(window.devicePixelRatio);
@@ -25,34 +64,84 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 const starContainer = new t.Object3D();
 scene.add(starContainer);
 
-const geometry = new t.CylinderGeometry(10, 10, 20, 100, 100, false, 90, 8);
-const material = new t.MeshStandardMaterial({
-  color: 0xff3456,
-});
-const meshh = new t.Mesh(geometry, material);
+const pointLight = new t.PointLight(0xffffff, 3);
+const pointLight1 = new t.PointLight(0xffffff, 2);
+pointLight1.position.set(30, 50, 200);
+pointLight.position.set(9, 9, 9);
 
-const pointLight = new t.PointLight(0xffffff, 1);
-pointLight.position.set(10, 10, 10);
+// const lightHelper = new t.PointLightHelper(pointLight, 3, "red");
+// const lightHelper1 = new t.PointLightHelper(pointLight1, 3, "red");
 
-const lightHelper1 = new t.PointLightHelper(pointLight, 3, "red");
-
-const ambientLight = new t.AmbientLight(0xffffff, 1);
+const ambientLight = new t.AmbientLight(0xffa800, 1);
 const controls = new OrbitControls(camera, renderer.domElement);
 
-scene.add(pointLight, ambientLight, lightHelper1, meshh);
-meshh.position.setZ(-100);
+scene.add(pointLight, ambientLight, pointLight1); //lightHelper1, lightHelper);
+
+function colorGen() {
+  let hue = Math.floor(Math.random() * 360);
+  while (hue > 50 && hue < 350) {
+    hue = Math.floor(Math.random() * 360);
+  }
+  return {
+    h: hue,
+    s: 100,
+    l: 50,
+  };
+}
+
+function HSLToHex(h, s, l) {
+  s /= 100;
+  l /= 100;
+
+  let c = (1 - Math.abs(2 * l - 1)) * s,
+    x = c * (1 - Math.abs(((h / 60) % 2) - 1)),
+    m = l - c / 2,
+    r = 0,
+    g = 0,
+    b = 0;
+
+  if (0 <= h && h < 60) {
+    r = c;
+    g = x;
+    b = 0;
+  } else if (60 <= h && h < 120) {
+    r = x;
+    g = c;
+    b = 0;
+  } else if (120 <= h && h < 180) {
+    r = 0;
+    g = c;
+    b = x;
+  } else if (180 <= h && h < 240) {
+    r = 0;
+    g = x;
+    b = c;
+  } else if (240 <= h && h < 300) {
+    r = x;
+    g = 0;
+    b = c;
+  } else if (300 <= h && h < 360) {
+    r = c;
+    g = 0;
+    b = x;
+  }
+  // Having obtained RGB, convert channels to hex
+  r = Math.round((r + m) * 255).toString(16);
+  g = Math.round((g + m) * 255).toString(16);
+  b = Math.round((b + m) * 255).toString(16);
+
+  // Prepend 0s, if necessary
+  if (r.length == 1) r = "0" + r;
+  if (g.length == 1) g = "0" + g;
+  if (b.length == 1) b = "0" + b;
+
+  return "#" + r + g + b;
+}
 
 function addStar() {
   const geometry = new t.SphereGeometry(1, 10, 10);
   const material = new t.MeshStandardMaterial({
-    color:
-      "#" +
-      t.MathUtils.randInt(0, 9) +
-      t.MathUtils.randInt(0, 9) +
-      t.MathUtils.randInt(0, 9) +
-      t.MathUtils.randInt(0, 9) +
-      t.MathUtils.randInt(0, 9) +
-      t.MathUtils.randInt(0, 9),
+    color: HSLToHex(colorGen().h, colorGen().s, colorGen().l),
   });
   const star = new t.Mesh(geometry, material);
 
@@ -62,7 +151,16 @@ function addStar() {
   star.position.set(x, y, z);
   starContainer.add(star);
 }
-Array(2000).fill().forEach(addStar);
+Array(1000).fill().forEach(addStar);
+
+const loaderHg = new GLTFLoader();
+const hgContainer = new t.Object3D();
+scene.add(hgContainer);
+loaderHg.load("./hourglass/hg.gltf", function (gltf) {
+  hgContainer.add(gltf.scene);
+});
+hgContainer.position.set(0, 0, -100);
+hgContainer.scale.set(2, 2, 2);
 
 const loaderMic = new GLTFLoader();
 const micContainer = new t.Object3D();
@@ -97,7 +195,7 @@ function moveCamera() {
   const tt = document.body.getBoundingClientRect().top;
   micContainer.rotation.x += 0.1;
   micContainer.rotation.z += 0.05;
-  kbContainer.rotation.z += 0.01;
+  kbContainer.rotation.z += 0.03;
   kbContainer.rotation.x += 0.01;
   camera.position.z = 100 + tt * -0.06;
   camera.position.x = tt * -0.06;
@@ -105,7 +203,8 @@ function moveCamera() {
 }
 document.body.onscroll = moveCamera;
 
-const raycaster = new t.Raycaster();
+const micRaycaster = new t.Raycaster();
+const kbRaycaster = new t.Raycaster();
 const pointer = new t.Vector2();
 function onPointerMove(event) {
   pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -114,10 +213,11 @@ function onPointerMove(event) {
 let isClicked = false;
 function clicked() {
   isClicked = true;
-  setTimeout(unClicked, 10);
+  setTimeout(unClicked, 100);
 }
 function unClicked() {
   isClicked = false;
+  micContainer.scale.set(2, 2, 2);
 }
 window.addEventListener("pointermove", onPointerMove);
 window.addEventListener("click", clicked);
@@ -154,13 +254,12 @@ const clock = new t.Clock();
 function animate() {
   requestAnimationFrame(animate);
   if (mixer) mixer.update(clock.getDelta());
-  meshh.rotation.x += 0.02;
   starContainer.rotation.x += 0.0006;
+  hgContainer.rotation.x += 0.02;
   controls.update();
   renderer.render(scene, camera);
-  raycaster.setFromCamera(pointer, camera);
-
-  const intersects = raycaster.intersectObjects(scene.children);
+  micRaycaster.setFromCamera(pointer, camera);
+  const intersects = micRaycaster.intersectObjects(scene.children);
 
   for (let i = 0; i < intersects.length; i++) {
     if (
@@ -170,9 +269,120 @@ function animate() {
         isClicked == true)
     ) {
       if (window.pageYOffset != 0) {
-        window.scrollBy(0, 10);
+        document.getElementById("microphone").style.color = "#ffcdb3";
+        document.getElementById("microphone").style.top =
+          document.documentElement.scrollTop * 0.112 + "vh";
       }
     }
+  }
+
+  kbRaycaster.setFromCamera(pointer, camera);
+  const kbIntersects = kbRaycaster.intersectObjects(scene.children);
+  let objArray = [
+    "Object_0",
+    "Object_2",
+    "Object_4",
+    "Object_6",
+    "Object_8",
+    "Object_10",
+    "Object_12",
+    "Object_14",
+    "Object_16",
+    "Object_18",
+    "Object_20",
+    "Object_22",
+    "Object_24",
+    "Object_26",
+    "Object_28",
+    "Object_30",
+    "Object_32",
+    "Object_34",
+    "Object_36",
+    "Object_38",
+    "Object_40",
+    "Object_42",
+    "Object_44",
+    "Object_46",
+    "Object_48",
+    "Object_50",
+    "Object_52",
+    "Object_54",
+    "Object_56",
+    "Object_58",
+    "Object_60",
+    "Object_62",
+    "Object_64",
+    "Object_66",
+    "Object_68",
+    "Object_70",
+    "Object_72",
+    "Object_74",
+    "Object_76",
+    "Object_78",
+    "Object_80",
+    "Object_82",
+    "Object_84",
+    "Object_86",
+    "Object_88",
+    "Object_90",
+    "Object_92",
+    "Object_94",
+    "Object_96",
+    "Object_98",
+    "Object_100",
+    "Object_102",
+    "Object_104",
+    "Object_106",
+    "Object_108",
+    "Object_110",
+    "Object_112",
+    "Object_114",
+    "Object_116",
+    "Object_118",
+    "Object_120",
+    "Object_122",
+    "Object_124",
+    "Object_126",
+    "Object_128",
+    "Object_130",
+    "Object_132",
+    "Object_134",
+    "Object_136",
+    "Object_138",
+    "Object_140",
+    "Object_142",
+    "Object_144",
+    "Object_146",
+    "Object_148",
+    "Object_150",
+    "Object_152",
+    "Object_154",
+    "Object_156",
+    "Object_158",
+    "Object_160",
+    "Object_162",
+    "Object_164",
+    "Object_166",
+    "Object_168",
+    "Object_170",
+    "Object_172",
+    "Object_174",
+    "Object_176",
+    "Object_178",
+    "Object_180",
+    "Object_182",
+    "Object_184",
+    "Object_186",
+  ];
+  for (let i = 0; i < kbIntersects.length; i++) {
+    for (let j = 0; j < objArray.length; j++)
+      if (kbIntersects[i].object.name == objArray[j] && isClicked == true) {
+        if (window.pageYOffset != 0) {
+          document.getElementById("keyboard").style.color = "#ffcdb3";
+          document.getElementById("keyboard").style.top =
+            document.documentElement.scrollTop * 0.112 + "vh";
+        }
+      }
   }
 }
 

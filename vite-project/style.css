@@ -1,3 +1,6 @@
+* {
+  margin: 0;
+}
 canvas {
   position: fixed;
   top: 0;
@@ -6,6 +9,9 @@ canvas {
 
 main {
   position: absolute;
+  display: grid;
+  align-items: center;
+  justify-items: center;
 }
 
 header {
@@ -19,16 +25,36 @@ header {
   background-color: transparent;
 }
 
+#microphone {
+  padding: 20%;
+  font-family: "Major Mono Display", monospace;
+  color: transparent;
+  user-select: none;
+  transition: all 1s;
+  position: absolute;
+  top: 0vh;
+}
+
+#keyboard {
+  padding: 20%;
+  font-family: "Major Mono Display", monospace;
+  color: transparent;
+  user-select: none;
+  transition: all 1s;
+  position: absolute;
+  top: 0vh;
+}
+
+#y {
+  color: transparent;
+}
+
 #text {
   color: transparent;
+  align-self: center;
   user-select: none;
 }
 
-#text1 {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
 ::-webkit-scrollbar {
   display: none;
 }
