@@ -4,7 +4,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 const scene = new t.Scene();
-const spaceTexture = new t.TextureLoader().load("space.png");
+const spaceTexture = new t.TextureLoader().load("space2.png");
 spaceTexture.minFilter = t.LinearFilter;
 scene.background = spaceTexture;
 
@@ -64,18 +64,18 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 const starContainer = new t.Object3D();
 scene.add(starContainer);
 
-const pointLight = new t.PointLight(0xffffff, 3);
-const pointLight1 = new t.PointLight(0xffffff, 2);
-pointLight1.position.set(30, 50, 200);
+const pointLight = new t.PointLight(0xffffff, 0);
+const pointLight1 = new t.PointLight(0xffffff, 4);
 pointLight.position.set(9, 9, 9);
+pointLight1.position.set(-30, 40, 120);
 
-// const lightHelper = new t.PointLightHelper(pointLight, 3, "red");
-// const lightHelper1 = new t.PointLightHelper(pointLight1, 3, "red");
+const lightHelper = new t.PointLightHelper(pointLight, 3, "red");
+const lightHelper1 = new t.PointLightHelper(pointLight1, 3, "red");
 
-const ambientLight = new t.AmbientLight(0xffa800, 1);
+const ambientLight = new t.AmbientLight(0xff0000, 2);
 const controls = new OrbitControls(camera, renderer.domElement);
 
-scene.add(pointLight, ambientLight, pointLight1); //lightHelper1, lightHelper);
+scene.add(pointLight, ambientLight, pointLight1, lightHelper1, lightHelper);
 
 function colorGen() {
   let hue = Math.floor(Math.random() * 360);
@@ -125,12 +125,10 @@ function HSLToHex(h, s, l) {
     g = 0;
     b = x;
   }
-  // Having obtained RGB, convert channels to hex
   r = Math.round((r + m) * 255).toString(16);
   g = Math.round((g + m) * 255).toString(16);
   b = Math.round((b + m) * 255).toString(16);
 
-  // Prepend 0s, if necessary
   if (r.length == 1) r = "0" + r;
   if (g.length == 1) g = "0" + g;
   if (b.length == 1) b = "0" + b;
@@ -186,9 +184,6 @@ assetLoader.load(kb.href, function (gltf) {
   const clips = gltf.animations;
   const action = mixer.clipAction(clips[0]);
   if (action) action.play();
-  else {
-    console.log("lol");
-  }
 });
 
 function moveCamera() {
@@ -269,9 +264,9 @@ function animate() {
         isClicked == true)
     ) {
       if (window.pageYOffset != 0) {
-        document.getElementById("microphone").style.color = "#ffcdb3";
+        document.getElementById("microphone").style.color = "#ff8a66";
         document.getElementById("microphone").style.top =
-          document.documentElement.scrollTop * 0.112 + "vh";
+          document.documentElement.scrollTop * 0.1 + "vh";
       }
     }
   }
@@ -313,24 +308,6 @@ function animate() {
     "Object_62",
     "Object_64",
     "Object_66",
-    "Object_68",
-    "Object_70",
-    "Object_72",
-    "Object_74",
-    "Object_76",
-    "Object_78",
-    "Object_80",
-    "Object_82",
-    "Object_84",
-    "Object_86",
-    "Object_88",
-    "Object_90",
-    "Object_92",
-    "Object_94",
-    "Object_96",
-    "Object_98",
-    "Object_100",
-    "Object_102",
     "Object_104",
     "Object_106",
     "Object_108",
@@ -373,6 +350,8 @@ function animate() {
     "Object_182",
     "Object_184",
     "Object_186",
+    "Object_80",
+    "Object_40_1",
   ];
   for (let i = 0; i < kbIntersects.length; i++) {
     for (let j = 0; j < objArray.length; j++)
@@ -380,12 +359,11 @@ function animate() {
         if (window.pageYOffset != 0) {
           document.getElementById("keyboard").style.color = "#ffcdb3";
           document.getElementById("keyboard").style.top =
-            document.documentElement.scrollTop * 0.112 + "vh";
+            document.documentElement.scrollTop * 0.1 + "vh";
         }
       }
   }
 }
-
 animate();
 
 window.addEventListener("unload", function (e) {

@@ -7,6 +7,16 @@ canvas {
   left: 0;
 }
 
+#loader {
+  background: #000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100vw;
+  height: 100vh;
+}
+
 main {
   position: absolute;
   display: grid;
@@ -21,7 +31,7 @@ header {
   width: 100%;
   padding: 20px 0;
   text-align: center;
-  z-index: 9999;
+  z-index: 9998;
   background-color: transparent;
 }
 
@@ -30,9 +40,11 @@ header {
   font-family: "Major Mono Display", monospace;
   color: transparent;
   user-select: none;
-  transition: all 1s;
+  transition: all 0.7s;
   position: absolute;
   top: 0vh;
+
+  font-size: 3em;
 }
 
 #keyboard {
@@ -40,9 +52,10 @@ header {
   font-family: "Major Mono Display", monospace;
   color: transparent;
   user-select: none;
-  transition: all 1s;
+  transition: all 0.7s;
   position: absolute;
   top: 0vh;
+  font-size: 3em;
 }
 
 #y {

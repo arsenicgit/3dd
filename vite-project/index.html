@@ -12,11 +12,13 @@
     />
     <title>Vite App</title>
   </head>
-  <body>
+  <body style="background-color: black">
     <canvas id="bg"></canvas>
+
     <main>
+      <div id="loader"></div>
       <header><a class="section1">lol</a></header>
-      <h1 id="text">
+      <h1 id="text" style="color: transparent" ;>
         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Rem eius,
         sapiente numquam repudiandae mollitia harum animi praesentium modi quas
         atque nostrum? Voluptates placeat a expedita, magnam repellendus eos
@@ -599,6 +601,7 @@
       </h1>
       <script type="module" src="./main.js"></script>
       <a tabindex="-1" class="section2" href="#section1">lmao</a>
+
       <h1 id="y">
         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Assumenda sunt
         repudiandae at nesciunt ut. Enim, maxime consectetur! Ipsa voluptatibus
@@ -646,6 +649,11 @@
         labore blanditiis tempore, iure praesentium earum excepturi ipsa
         incidunt?
       </h1>
+      <script>
+        setTimeout(function () {
+          document.getElementById("loader").style.display = "none";
+        }, 4000);
+      </script>
     </main>
   </body>
 </html>
