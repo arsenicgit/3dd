@@ -75,7 +75,7 @@ const lightHelper1 = new t.PointLightHelper(pointLight1, 3, "red");
 const ambientLight = new t.AmbientLight(0xff0000, 2);
 const controls = new OrbitControls(camera, renderer.domElement);
 
-scene.add(pointLight, ambientLight, pointLight1, lightHelper1, lightHelper);
+scene.add(pointLight, ambientLight, pointLight1); //, lightHelper1, lightHelper);
 
 function colorGen() {
   let hue = Math.floor(Math.random() * 360);
