@@ -6,13 +6,16 @@ canvas {
   top: 0;
   left: 0;
 }
+body {
+  overflow: hidden;
+}
 
 #loader {
   background: #000;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 9999;
+  z-index: 9998;
   width: 100vw;
   height: 100vh;
 }
@@ -31,8 +34,25 @@ header {
   width: 100%;
   padding: 20px 0;
   text-align: center;
-  z-index: 9998;
+  z-index: 999;
   background-color: transparent;
+}
+
+.section1 {
+  color: #fff7c2;
+  font: 1.5em "Major Mono Display", monospace;
+  user-select: none;
+}
+
+.section2 {
+  color: #fff7c2;
+  font: 6em "Major Mono Display", monospace;
+  user-select: none;
+}
+a {
+  user-select: none;
+  cursor: default;
+  text-decoration: none;
 }
 
 #microphone {
@@ -43,8 +63,10 @@ header {
   transition: all 0.7s;
   position: absolute;
   top: 0vh;
-
-  font-size: 3em;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: 4.2vh;
 }
 
 #keyboard {
@@ -55,11 +77,38 @@ header {
   transition: all 0.7s;
   position: absolute;
   top: 0vh;
-  font-size: 3em;
+  justify-content: center;
+  align-items: center;
+  font-size: 4.2vh;
+}
+#controller {
+  padding: 20%;
+  font-family: "Major Mono Display", monospace;
+  color: transparent;
+  user-select: none;
+  transition: all 0.7s;
+  position: absolute;
+  top: 0vh;
+  justify-content: center;
+  align-items: center;
+  font-size: 4.2vh;
+}
+#globe {
+  padding: 20%;
+  font-family: "Major Mono Display", monospace;
+  color: transparent;
+  user-select: none;
+  transition: all 0.7s;
+  position: absolute;
+  top: 0vh;
+  justify-content: center;
+  align-items: center;
+  font-size: 4.2vh;
 }
 
 #y {
   color: transparent;
+  user-select: none;
 }
 
 #text {
@@ -67,7 +116,100 @@ header {
   align-self: center;
   user-select: none;
 }
+body {
+  display: flex;
+  height: 100vh;
+}
 
+.cube {
+  margin: auto;
+  font-size: 24px;
+  height: 1em;
+  width: 1em;
+  position: absolute;
+  justify-content: center;
+  transform: rotatex(30deg) rotatey(45deg);
+  transform-style: preserve-3d;
+  z-index: 9999;
+  top: 50vh;
+  left: 50vw;
+  animation: cube-spin 1.5s infinite ease-in-out alternate;
+}
+
+.side {
+  color: #ffe90c;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transform-style: preserve-3d;
+}
+.side::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: currentcolor;
+  transform: translatez(0.5em);
+  animation: cube-explode 1.5s infinite ease-in-out;
+  opacity: 0.5;
+}
+
+.side:nth-child(1) {
+  transform: rotatey(90deg);
+}
+
+.side:nth-child(2) {
+  transform: rotatey(180deg);
+}
+
+.side:nth-child(3) {
+  transform: rotatey(270deg);
+}
+
+.side:nth-child(4) {
+  transform: rotatey(360deg);
+}
+
+.side:nth-child(5) {
+  transform: rotatex(90deg);
+}
+
+.side:nth-child(6) {
+  transform: rotatex(270deg);
+}
+
+@keyframes cube-spin {
+  0% {
+    transform: rotatex(30deg) rotatey(45deg);
+  }
+  100% {
+    transform: rotatex(30deg) rotatey(405deg);
+  }
+}
+@keyframes cube-explode {
+  0% {
+    transform: translatez(0.5em);
+  }
+  50% {
+    transform: translatez(0.75em);
+  }
+  100% {
+    transform: translatez(0.5em);
+  }
+}
 ::-webkit-scrollbar {
   display: none;
+}
+
+@media only screen and (max-width: 600px) {
+  #microphone,
+  #keyboard,
+  #controller,
+  #globe {
+    font-size: 2.2vh;
+  }
 }

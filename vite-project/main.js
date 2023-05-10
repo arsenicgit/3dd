@@ -4,7 +4,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 const scene = new t.Scene();
-const spaceTexture = new t.TextureLoader().load("space2.png");
+const spaceTexture = new t.TextureLoader().load("spacee.png");
 spaceTexture.minFilter = t.LinearFilter;
 scene.background = spaceTexture;
 
@@ -66,16 +66,18 @@ scene.add(starContainer);
 
 const pointLight = new t.PointLight(0xffffff, 0);
 const pointLight1 = new t.PointLight(0xffffff, 4);
+const pointLight2 = new t.PointLight(0xffffff, 4);
 pointLight.position.set(9, 9, 9);
 pointLight1.position.set(-30, 40, 120);
+pointLight2.position.set(130, 140, 230);
 
 const lightHelper = new t.PointLightHelper(pointLight, 3, "red");
-const lightHelper1 = new t.PointLightHelper(pointLight1, 3, "red");
+const lightHelper1 = new t.PointLightHelper(pointLight2, 3, "red");
 
-const ambientLight = new t.AmbientLight(0xff0000, 2);
+const ambientLight = new t.AmbientLight(0xffffff, 2);
 const controls = new OrbitControls(camera, renderer.domElement);
 
-scene.add(pointLight, ambientLight, pointLight1); //, lightHelper1, lightHelper);
+scene.add(pointLight, ambientLight, pointLight1); //lightHelper);
 
 function colorGen() {
   let hue = Math.floor(Math.random() * 360);
@@ -169,8 +171,35 @@ loaderMic.load("./microphone/mic.gltf", function (gltf) {
 micContainer.position.set(33, 33, 120);
 micContainer.scale.set(2, 2, 2);
 
-const kb = new URL("./keyboard/kb.gltf", import.meta.url);
+const loaderCont = new GLTFLoader();
+const contContainer = new t.Object3D();
+scene.add(contContainer);
+loaderCont.load("./controller/cont.gltf", function (gltf) {
+  contContainer.add(gltf.scene);
+});
+contContainer.position.set(130, 135, 250);
+contContainer.scale.set(1.4, 1.4, 1.4);
 
+const loaderGl = new GLTFLoader();
+const glContainer = new t.Object3D();
+scene.add(glContainer);
+loaderGl.load("./globe/globeStand.gltf", function (gltf) {
+  glContainer.add(gltf.scene);
+});
+glContainer.position.set(208, 180, 250);
+glContainer.rotation.set(0, 200, 0);
+glContainer.scale.set(1.5, 1.5, 1.5);
+
+const loaderGl1 = new GLTFLoader();
+const glContainer1 = new t.Object3D();
+scene.add(glContainer1);
+loaderGl1.load("./globeSphere/globeSphere.gltf", function (gltf) {
+  glContainer1.add(gltf.scene);
+});
+glContainer1.position.set(207, 180, 252);
+glContainer1.scale.set(1.5, 1.5, 1.5);
+
+const kb = new URL("./keyboard/kb.gltf", import.meta.url);
 const assetLoader = new GLTFLoader();
 const kbContainer = new t.Object3D();
 let mixer;
@@ -192,6 +221,8 @@ function moveCamera() {
   micContainer.rotation.z += 0.05;
   kbContainer.rotation.z += 0.03;
   kbContainer.rotation.x += 0.01;
+  contContainer.rotation.y += 0.05;
+  contContainer.rotation.x += 0.06;
   camera.position.z = 100 + tt * -0.06;
   camera.position.x = tt * -0.06;
   camera.position.y = tt * -0.06;
@@ -200,6 +231,8 @@ document.body.onscroll = moveCamera;
 
 const micRaycaster = new t.Raycaster();
 const kbRaycaster = new t.Raycaster();
+const contRaycaster = new t.Raycaster();
+const glRaycaster = new t.Raycaster();
 const pointer = new t.Vector2();
 function onPointerMove(event) {
   pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -239,11 +272,11 @@ function smoothScroll(target, duration) {
   requestAnimationFrame(loop);
 }
 var section1 = document.querySelector(".section1");
-section1.addEventListener("click", function () {
-  if (camera.position.z <= 100) {
+if (camera.position.z <= 100) {
+  section1.addEventListener("click", function () {
     smoothScroll(".section2", 1000);
-  }
-});
+  });
+}
 
 const clock = new t.Clock();
 function animate() {
@@ -251,11 +284,16 @@ function animate() {
   if (mixer) mixer.update(clock.getDelta());
   starContainer.rotation.x += 0.0006;
   hgContainer.rotation.x += 0.02;
+  glContainer1.rotation.y += 0.03;
   controls.update();
   renderer.render(scene, camera);
   micRaycaster.setFromCamera(pointer, camera);
   const intersects = micRaycaster.intersectObjects(scene.children);
-
+  contRaycaster.setFromCamera(pointer, camera);
+  const contintersects = contRaycaster.intersectObjects(scene.children);
+  glRaycaster.setFromCamera(pointer, camera);
+  const glintersects = glRaycaster.intersectObjects(scene.children);
+  const res = window.screen.width / window.screen.height;
   for (let i = 0; i < intersects.length; i++) {
     if (
       (intersects[i].object.name == "Body_low_Microphone_0" &&
@@ -264,9 +302,101 @@ function animate() {
         isClicked == true)
     ) {
       if (window.pageYOffset != 0) {
-        document.getElementById("microphone").style.color = "#ff8a66";
-        document.getElementById("microphone").style.top =
-          document.documentElement.scrollTop * 0.1 + "vh";
+        document.getElementById("microphone").style.color = "#ffcdb3";
+        if (res > 1.7778) {
+          document.getElementById("microphone").style.top =
+            document.documentElement.scrollTop * (res * 0.075) + "vh";
+        } else if (res < 1.7778 && res > 1.5) {
+          document.getElementById("microphone").style.top =
+            document.documentElement.scrollTop * (res * 0.057) + "vh";
+        } else if (res < 1.5 && res > 0.9) {
+          document.getElementById("microphone").style.top =
+            document.documentElement.scrollTop * (res * 0.13) + "vh";
+        } else if (res < 0.9 && res > 0.5) {
+          document.getElementById("microphone").style.top =
+            document.documentElement.scrollTop * (res * 0.21) + "vh";
+        } else {
+          document.getElementById("microphone").style.top =
+            document.documentElement.scrollTop * (res * 0.3) + "vh";
+        }
+      }
+    }
+  }
+  for (let i = 0; i < glintersects.length; i++) {
+    if (
+      (glintersects[i].object.name == "Cylinder_1" && isClicked == true) ||
+      (glintersects[i].object.name == "Icosphere" && isClicked == true) ||
+      (glintersects[i].object.name == "Torus001" && isClicked == true) ||
+      (glintersects[i].object.name == "Torus" && isClicked == true) ||
+      (glintersects[i].object.name == "Cylinder_2" && isClicked == true)
+    ) {
+      if (window.pageYOffset != 0) {
+        document.getElementById("globe").style.color = "#ffcdb3";
+        if (res > 1.7778) {
+          document.getElementById("globe").style.top =
+            document.documentElement.scrollTop * (res * 0.075) + "vh";
+        } else if (res < 1.7778 && res > 1.5) {
+          document.getElementById("globe").style.top =
+            document.documentElement.scrollTop * (res * 0.057) + "vh";
+        } else if (res < 1.5 && res > 0.9) {
+          document.getElementById("globe").style.top =
+            document.documentElement.scrollTop * (res * 0.13) + "vh";
+        } else if (res < 0.9 && res > 0.5) {
+          document.getElementById("globe").style.top =
+            document.documentElement.scrollTop * (res * 0.21) + "vh";
+        } else {
+          document.getElementById("globe").style.top =
+            document.documentElement.scrollTop * (res * 0.3) + "vh";
+        }
+      }
+    }
+  }
+  for (let i = 0; i < contintersects.length; i++) {
+    if (
+      (contintersects[i].object.name == "Plane002_11_-_Default_0" &&
+        isClicked == true) ||
+      (contintersects[i].object.name == "Plane002_10_-_Default_0" &&
+        isClicked == true) ||
+      (contintersects[i].object.name == "Cylinder005_10_-_Default_0" &&
+        isClicked == true) ||
+      (contintersects[i].object.name == "Cylinder004_10_-_Default_0" &&
+        isClicked == true) ||
+      (contintersects[i].object.name == "Cylinder007_rubber_0" &&
+        isClicked == true) ||
+      (contintersects[i].object.name == "Cylinder008_rubber_0" &&
+        isClicked == true) ||
+      (contintersects[i].object.name == "Plane002_ultrablack_0" &&
+        isClicked == true) ||
+      (contintersects[i].object.name == "topbuttons001_ultrablack_0" &&
+        isClicked == true) ||
+      (contintersects[i].object.name == "bottombuttons001_ultrablack_0" &&
+        isClicked == true) ||
+      (contintersects[i].object.name == "bottombuttons_ultrablack_0" &&
+        isClicked == true) ||
+      (contintersects[i].object.name == "touchpad_11_-_Default_0" &&
+        isClicked == true)
+
+      //console.log(contintersects[i].object.name)
+    ) {
+      if (window.pageYOffset != 0) {
+        document.getElementById("controller").style.color = "#ffcdb3";
+        if (res > 1.7778) {
+          document.getElementById("controller").style.top =
+            document.documentElement.scrollTop * (res * 0.075) + "vh";
+          console.log(res);
+        } else if (res < 1.7778 && res > 1.5) {
+          document.getElementById("controller").style.top =
+            document.documentElement.scrollTop * (res * 0.057) + "vh";
+        } else if (res < 1.5 && res > 0.9) {
+          document.getElementById("controller").style.top =
+            document.documentElement.scrollTop * (res * 0.13) + "vh";
+        } else if (res < 0.9 && res > 0.5) {
+          document.getElementById("controller").style.top =
+            document.documentElement.scrollTop * (res * 0.21) + "vh";
+        } else {
+          document.getElementById("controller").style.top =
+            document.documentElement.scrollTop * (res * 0.3) + "vh";
+        }
       }
     }
   }
@@ -358,8 +488,22 @@ function animate() {
       if (kbIntersects[i].object.name == objArray[j] && isClicked == true) {
         if (window.pageYOffset != 0) {
           document.getElementById("keyboard").style.color = "#ffcdb3";
-          document.getElementById("keyboard").style.top =
-            document.documentElement.scrollTop * 0.1 + "vh";
+          if (res > 1.7778) {
+            document.getElementById("keyboard").style.top =
+              document.documentElement.scrollTop * (res * 0.075) + "vh";
+          } else if (res < 1.7778 && res > 1.5) {
+            document.getElementById("keyboard").style.top =
+              document.documentElement.scrollTop * (res * 0.057) + "vh";
+          } else if (res < 1.5 && res > 0.9) {
+            document.getElementById("keyboard").style.top =
+              document.documentElement.scrollTop * (res * 0.13) + "vh";
+          } else if (res < 0.9 && res > 0.5) {
+            document.getElementById("keyboard").style.top =
+              document.documentElement.scrollTop * (res * 0.21) + "vh";
+          } else {
+            document.getElementById("keyboard").style.top =
+              document.documentElement.scrollTop * (res * 0.3) + "vh";
+          }
         }
       }
   }
