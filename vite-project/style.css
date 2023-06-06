@@ -39,13 +39,13 @@ header {
 }
 
 .section1 {
-  color: #fff7c2;
+  color: #ffc7a1;
   font: 1.5em "Major Mono Display", monospace;
   user-select: none;
 }
 
 .section2 {
-  color: #fff7c2;
+  color: #ffc7a1;
   font: 6em "Major Mono Display", monospace;
   user-select: none;
 }
@@ -67,6 +67,7 @@ a {
   justify-content: space-evenly;
   align-items: center;
   font-size: 4.2vh;
+  text-shadow: none;
 }
 
 #keyboard {

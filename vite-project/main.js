@@ -302,7 +302,8 @@ function animate() {
         isClicked == true)
     ) {
       if (window.pageYOffset != 0) {
-        document.getElementById("microphone").style.color = "#ffcdb3";
+        document.getElementById("microphone").style.textShadow =
+          "0 0 0px #ffc7a1, 0 0 10px #15002e, 0 0 20px #15002e, 0 0 40px #15002e";
         if (res > 1.7778) {
           document.getElementById("microphone").style.top =
             document.documentElement.scrollTop * (res * 0.075) + "vh";
@@ -331,7 +332,8 @@ function animate() {
       (glintersects[i].object.name == "Cylinder_2" && isClicked == true)
     ) {
       if (window.pageYOffset != 0) {
-        document.getElementById("globe").style.color = "#ffcdb3";
+        document.getElementById("globe").style.textShadow =
+          "0 0 0px #ffc7a1, 0 0 10px #15002e, 0 0 20px #15002e, 0 0 40px #15002e";
         if (res > 1.7778) {
           document.getElementById("globe").style.top =
             document.documentElement.scrollTop * (res * 0.075) + "vh";
@@ -379,7 +381,8 @@ function animate() {
       //console.log(contintersects[i].object.name)
     ) {
       if (window.pageYOffset != 0) {
-        document.getElementById("controller").style.color = "#ffcdb3";
+        document.getElementById("controller").style.textShadow =
+          "0 0 0px #ffc7a1, 0 0 10px #15002e, 0 0 20px #15002e, 0 0 40px #15002e";
         if (res > 1.7778) {
           document.getElementById("controller").style.top =
             document.documentElement.scrollTop * (res * 0.075) + "vh";
@@ -487,7 +490,8 @@ function animate() {
     for (let j = 0; j < objArray.length; j++)
       if (kbIntersects[i].object.name == objArray[j] && isClicked == true) {
         if (window.pageYOffset != 0) {
-          document.getElementById("keyboard").style.color = "#ffcdb3";
+          document.getElementById("keyboard").style.textShadow =
+            "0 0 0px #ffc7a1, 0 0 10px #15002e, 0 0 20px #15002e, 0 0 40px #15002e, 0 0 80px #15002e";
           if (res > 1.7778) {
             document.getElementById("keyboard").style.top =
               document.documentElement.scrollTop * (res * 0.075) + "vh";
