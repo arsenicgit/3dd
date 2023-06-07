@@ -1,3 +1,8 @@
+@font-face {
+  font-family: "against-Regular";
+  src: url("./against regular.otf");
+}
+
 * {
   margin: 0;
 }
@@ -40,13 +45,13 @@ header {
 
 .section1 {
   color: #ffc7a1;
-  font: 1.5em "Major Mono Display", monospace;
+  font: 1.5em "against-Regular", monospace;
   user-select: none;
 }
 
 .section2 {
   color: #ffc7a1;
-  font: 6em "Major Mono Display", monospace;
+  font: 6em "against-Regular", monospace;
   user-select: none;
 }
 a {
@@ -57,7 +62,7 @@ a {
 
 #microphone {
   padding: 20%;
-  font-family: "Major Mono Display", monospace;
+  font-family: "against-Regular", monospace;
   color: transparent;
   user-select: none;
   transition: all 0.7s;
@@ -72,7 +77,7 @@ a {
 
 #keyboard {
   padding: 20%;
-  font-family: "Major Mono Display", monospace;
+  font-family: "against-Regular", monospace;
   color: transparent;
   user-select: none;
   transition: all 0.7s;
@@ -84,7 +89,7 @@ a {
 }
 #controller {
   padding: 20%;
-  font-family: "Major Mono Display", monospace;
+  font-family: "against-Regular", monospace;
   color: transparent;
   user-select: none;
   transition: all 0.7s;
@@ -96,7 +101,7 @@ a {
 }
 #globe {
   padding: 20%;
-  font-family: "Major Mono Display", monospace;
+  font-family: "against-Regular";
   color: transparent;
   user-select: none;
   transition: all 0.7s;
